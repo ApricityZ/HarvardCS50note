@@ -1,0 +1,44 @@
+from pyfiglet import Figlet
+import sys
+import random
+
+def output_front(str_input, figlet, font):
+    """
+    使用指定字体将输入字符串转换为ASCII艺术字。
+
+    Args:
+        str_input (str): 要转换的字符串。
+        figlet (Figlet): Figlet对象，用于生成ASCII艺术字。
+        font (str): 要使用的字体名称。
+    """
+    figlet.setFont(font=font)
+    print(figlet.renderText(str_input))
+
+def parse_arguments(arguments):
+    """
+    解析命令行参数，决定要使用的字体和要转换的字符串。
+
+    Args:
+        arguments (list): 命令行参数列表。
+    """
+    figlet = Figlet()
+    fonts = figlet.getFonts()
+
+    if len(arguments) == 1:
+        str_input = input().strip()
+        font = random.choice(fonts)
+        output_front(str_input, figlet, font)
+    elif len(arguments) == 3:
+        if arguments[1] in ["-f", "--font"] and arguments[2] in fonts:
+            str_input = input().strip()
+            output_front(str_input, figlet, arguments[2])
+        else:
+            sys.exit("Invalid usage")
+    else:
+        sys.exit("Invalid usage")
+
+def main():
+    parse_arguments(sys.argv)
+
+if __name__ == '__main__':
+    main()
